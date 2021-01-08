@@ -80,7 +80,8 @@ def automate(file_data):
             for d in days.keys(): 
                 if row[10] == d:
                     start_time += timedelta(days=days[d])
-            end_time = start_time + timedelta(hours=3.25)
+            duration = abs(datetime.strptime(row[11], '%H:%M')-datetime.strptime(row[12], '%H:%M')).total_seconds()/3600 
+            end_time = start_time + timedelta(hours=duration)
             
             # end date
             end_date_str = " ".join([row[9], " 235959"])    # recurrence requires the full day 
@@ -100,7 +101,7 @@ def automate(file_data):
                 end_time=end_time,
                 end_date=end_date,
                 summary=summary,
-                duration=3.25,
+                duration=duration,
                 description=description,
                 location=location,
                 recurrence=recurrence
@@ -113,7 +114,7 @@ def automate(file_data):
             start_time = datetime.strptime(start_time_str, "%d-%b-%Y %H:%M")
             end_date_str = " ".join([row[9], " 235959"])    # recurrence requires the full day 
             end_date = datetime.strptime(end_date_str, "%d-%b-%Y %H%M%S")
-            duration = abs(datetime.strptime(row[11], '%H:%S')-datetime.strptime(row[12], '%H:%S')).total_seconds()/3600 
+            duration = abs(datetime.strptime(row[11], '%H:%M')-datetime.strptime(row[12], '%H:%M')).total_seconds()/3600 
             end_time = start_time + timedelta(hours=duration)
 
             summary = row[3] + " - " + row[5] + " " + row[4]
